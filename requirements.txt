@@ -1,0 +1,8 @@
+python-telegram-bot==21.3
+openai==1.55.3
+pyyaml==6.0.2
+psutil==6.1.1
+opentele>=0.12.0
+cryptg==0.4.0
+python-socks>=2.0
+pysocks>=1.7

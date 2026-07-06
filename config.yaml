@@ -1,0 +1,10 @@
+bot_token: ""
+admin_user_ids: []
+deepseek_api_key: ""
+deepseek_model: "deepseek-chat"
+deepseek_base_url: "https://api.deepseek.com"
+db_path: "data/tgcloud.db"
+sessions_dir: "data/sessions"
+uploads_dir: "data/uploads"
+max_concurrent_accounts: 5
+log_level: "INFO"

@@ -1,0 +1,23 @@
+[Unit]
+Description=TG Cloud Controller - Telegram Bot
+After=network.target docker.service
+Wants=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/tg-controller
+EnvironmentFile=/opt/tg-controller/.env
+ExecStart=/opt/tg-controller/start.sh
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=tg-controller
+
+# Memory limits for 1GB VPS
+MemoryHigh=512M
+MemoryMax=768M
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  tg-controller:
+    build: .
+    container_name: tg-cloud-controller
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data
+    environment:
+      - TG_BOT_TOKEN=${TG_BOT_TOKEN}
+      - TG_ADMIN_IDS=${TG_ADMIN_IDS:-}
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY:-}
+      - DEEPSEEK_MODEL=${DEEPSEEK_MODEL:-deepseek-chat}
+      - DEEPSEEK_BASE_URL=${DEEPSEEK_BASE_URL:-https://api.deepseek.com}
+      - MAX_CONCURRENT_ACCOUNTS=${MAX_CONCURRENT_ACCOUNTS:-5}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 128M
