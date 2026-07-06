@@ -1,13 +1,15 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.11+-blue.svg" alt="Python">
+  <img src="https://img.shields.io/badge/Telethon-1.36-orange.svg" alt="Telethon">
   <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License">
   <img src="https://img.shields.io/badge/Docker-Ready-2496ED.svg" alt="Docker">
+  <img src="https://img.shields.io/badge/DeepSeek-AI-purple.svg" alt="DeepSeek">
 </p>
 
 <p align="center">
   <h1 align="center">🤖 TG Cloud Controller</h1>
   <p align="center">Enterprise-grade Telegram Cloud Control Platform</p>
-  <p align="center">企业级 Telegram 云控矩阵管理平台</p>
+  <p align="center">企业级 Telegram 云控矩阵管理平台 — 统一 Bot 界面，批量管理百号矩阵</p>
 </p>
 
 ---
@@ -20,14 +22,16 @@ TG Cloud Controller 是一个基于 Python 的 Telegram 账号矩阵云控管理
 
 | 功能模块 | 说明 | 状态 |
 |---------|------|------|
-| 📋 账号管理 | ZIP 批量导入、tdata 自动识别、分组管理 | ✅ 已完成 |
-| 🤖 Bot 控制 | 中文 InlineKeyboard 菜单、指令路由 | ✅ 已完成 |
-| 🧠 AI 集成 | 接入 DeepSeek API，智能指令解析 | ✅ 已完成 |
-| 📨 群发私信 | 批量发送、监听回复、中英双向翻译 | ✅ 已完成 |
-| 👥 批量进群 | 指定账号/分组批量加入群组 | ✅ 已完成 |
-| 🔑 批量修改 | 2FA/头像/名字一键批量修改 | ✅ 已完成 |
-| 🔍 群组搜索 | 关键词搜索 + 自动加入 + 提取成员 | ✅ 已完成 |
-| 🧠 DeepSeek AI | 智能指令解析、消息总结 | ✅ 已完成 |
+| 📋 账号管理 | ZIP 批量导入、tdata/session 自动识别、分组管理、导出 | ✅ 已完成 |
+| 🤖 Bot 控制 | 中文 InlineKeyboard 菜单、指令路由、分页浏览 | ✅ 已完成 |
+| 🧠 AI 集成 | DeepSeek API 智能指令解析、消息总结 | ✅ 已完成 |
+| 📨 群发私信 | 批量发送、消息监听、中英双向翻译、回复管理 | ✅ 已完成 |
+| 👥 批量进群 | 指定账号/分组批量加入群组，支持公开/私密链接 | ✅ 已完成 |
+| 🔑 批量修改 | 2FA 密码、头像 (UploadProfilePhoto)、名字 (UpdateProfile) | ✅ 已完成 |
+| 🔍 群组搜索 | 关键词搜索群组 + 自动加入 + 批量提取成员 | ✅ 已完成 |
+| 🖥 Desktop 备选 | Xvfb + xdotool UI 自动化 (实验性，无需 API) | ✅ 已完成 |
+| 🌐 翻译服务 | Google Translate 集成，自动中英双向翻译 | ✅ 已完成 |
+| 📊 任务系统 | 批量任务创建、进度追踪、结果汇总 | ✅ 已完成 |
 
 ---
 
@@ -35,26 +39,37 @@ TG Cloud Controller 是一个基于 Python 的 Telegram 账号矩阵云控管理
 
 ```
 ┌──────────────────────────────────────────┐
-│              Management Bot              │
-│         (python-telegram-bot)            │
-│     中文 InlineKeyboard 菜单 / 指令路由    │
+│           Management Bot (PTB)           │
+│  中文 InlineKeyboard 菜单 / 指令路由      │
+│  /start /menu /reply                    │
 └──────────────┬───────────────────────────┘
                │
 ┌──────────────▼───────────────────────────┐
-│           Core Services (Python)         │
+│           Core Services Layer            │
 │  ┌──────────┐ ┌──────────┐ ┌──────────┐ │
 │  │ Account  │ │  Batch   │ │ Message  │ │
 │  │ Manager  │ │   Ops    │ │ Monitor  │ │
 │  └──────────┘ └──────────┘ └──────────┘ │
 │  ┌──────────┐ ┌──────────┐ ┌──────────┐ │
-│  │ Creator  │ │  Group   │ │ DeepSeek │ │
-│  │ (注册)    │ │ Scraper  │ │   AI     │ │
+│  │  Group   │ │ tdata    │ │ DeepSeek │ │
+│  │ Scraper  │ │ Handler  │ │   AI     │ │
 │  └──────────┘ └──────────┘ └──────────┘ │
+│  ┌──────────┐ ┌──────────┐              │
+│  │ Desktop  │ │Translator│              │
+│  │Manager*  │ │(Google)  │              │
+│  └──────────┘ └──────────┘              │
 └──────────────┬───────────────────────────┘
                │
 ┌──────────────▼───────────────────────────┐
-│       Telethon Engine (多会话并发)       │
-│         SQLite 数据库 / tdata 处理        │
+│     Telethon MTProto Engine (并发)       │
+│  JoinGroup / SendMessage / UpdateProfile │
+│  Edit2FA / UploadPhoto / LeaveChannel    │
+│  human_delay 拟人随机延时 (0.8~3.5s)     │
+└──────────────┬───────────────────────────┘
+               │
+┌──────────────▼───────────────────────────┐
+│    SQLite (WAL) / session / tdata        │
+│    Docker / systemd / 1GB VPS            │
 └──────────────────────────────────────────┘
 ```
 
@@ -115,34 +130,120 @@ python main.py
 | `DEEPSEEK_MODEL` | ❌ | 模型名称 (默认 deepseek-chat) |
 | `MAX_CONCURRENT_ACCOUNTS` | ❌ | 最大并发账号数 (默认 5) |
 
+### 方式三：systemd 部署 (VPS 推荐)
+
+```bash
+# 安装为系统服务
+sudo cp tg-controller.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now tg-controller
+
+# 查看状态
+sudo systemctl status tg-controller
+sudo journalctl -u tg-controller -f
+```
+
+---
+
+## 🤖 Bot 菜单一览
+
+```
+📋 主菜单
+├── 📋 账号管理
+│   ├── ➕ 导入账号 (上传ZIP)
+│   ├── 🔄 验证账号 (并行, Telethon)
+│   ├── 📝 账号列表 (分页)
+│   ├── 📁 分组管理 (创建/删除/分配/移出/转移)
+│   ├── 🗑  删除账号 (多选)
+│   ├── 📦 导出账号 (按分组/按ID)
+│   └── 🔢 重新编号 (ID 重排 1~N)
+├── 👥 群组管理
+│   └── 📊 提取群成员
+├── 📨 群发私信
+│   ├── 📝 新建群发任务
+│   ├── 📊 查看任务状态
+│   ├── 💬 查看回复消息
+│   └── 🔔 消息监听 (自动翻译推送)
+├── 🔍 群组搜索 (关键词搜索群组)
+├── ⚙️ 批量操作
+│   ├── 🔗 批量进群
+│   ├── ✏️ 批量改名
+│   ├── 🔑 批量改2FA
+│   ├── 🖼 批量换头像
+│   └── ⚡ 一键任务 (进群+改名)
+├── 📊 运行状态
+│   ├── 🔄 刷新 (账号/分组/任务统计)
+│   └── 📈 系统资源 (RAM/Disk/Swap)
+└── 🔧 系统设置
+    ├── 🔑 DeepSeek API Key
+    ├── ⚡ 并发数量 (1-20)
+    ├── ⏱ 随机延时范围 (秒)
+    └── 🌐 API 凭据 (ID/Hash)
+```
+
 ---
 
 ## 📁 项目结构
 
 ```
 tg-cloud-controller/
-├── main.py                  # 入口文件
-├── config.yaml              # 配置文件
+├── main.py                  # 入口文件 (TGController 类)
+├── config.yaml              # YAML 配置文件
 ├── Dockerfile               # Docker 构建
-├── docker-compose.yml       # Docker 编排
+├── docker-compose.yml       # Docker 编排 (512M 内存限制)
 ├── requirements.txt         # Python 依赖
+├── start.sh                 # 系统启动脚本 (source .env)
+├── run.sh                   # 快速启动
+├── tg-controller.service    # systemd 单元文件
 ├── bot/
-│   ├── handlers.py          # Bot 指令处理
-│   └── keyboards.py         # InlineKeyboard 菜单定义
+│   ├── __init__.py
+│   ├── handlers.py          # Bot 指令处理 (940行, 完整交互流程)
+│   └── keyboards.py         # 中文 InlineKeyboard 菜单定义
 ├── core/
-│   ├── account_manager.py   # 账号管理服务
-│   ├── tdata_handler.py     # tdata 文件解析
-│   └── ai_service.py        # DeepSeek AI 集成
+│   ├── __init__.py
+│   ├── account_manager.py   # 账号管理 (ZIP导入/导出/分组/编号)
+│   ├── telethon_engine.py   # Telethon 多账号引擎 (MTProto API)
+│   ├── batch_ops.py         # 批量操作引擎 (异步并发)
+│   ├── ai_service.py        # DeepSeek AI 集成
+│   ├── tdata_handler.py     # tdata 文件解析与转换
+│   ├── group_scraper.py     # 群组搜索与成员提取
+│   ├── message_monitor.py   # 消息监听 + 自动翻译推送
+│   ├── translator.py        # Google Translate 双向翻译
+│   ├── desktop_manager.py   # Telegram Desktop 进程管理 (Xvfb)
+│   ├── desktop_automation.py # xdotool UI 自动化 (实验性)
+│   └── desktop_batch_ops.py # Desktop 批量操作 (实验性)
 ├── db/
-│   └── database.py          # SQLite 数据库操作
+│   ├── __init__.py
+│   └── database.py          # SQLite 数据库 (WAL模式, 6张表)
 ├── utils/
-│   ├── config.py            # 配置管理
-│   └── logger.py            # 日志工具
+│   ├── __init__.py
+│   ├── config.py            # 配置管理 (env + yaml)
+│   └── logger.py            # 日志系统 (控制台 + 滚动文件)
+├── test_suite.py             # 功能测试 62/62 ✅
+├── stress_test.py            # 压力测试 26/26 ✅
+├── stability_test.py         # 稳定性测试 599/600 ✅
 └── data/                    # 运行时数据 (volume)
-    ├── sessions/            # Telethon session 文件
+    ├── sessions/            # Telethon .session 文件
     ├── uploads/             # ZIP 上传缓存
     └── tgcloud.db           # SQLite 数据库
 ```
+
+---
+
+## 🗄 数据库结构
+
+6 张核心表，SQLite WAL 模式：
+
+```sql
+accounts         -- 账号主表 (id, name, phone, session_path, 2FA, metadata)
+account_groups   -- 分组表 (id, name, description)
+account_group_map-- 账号-分组多对多关系
+tasks            -- 批量任务表 (type, targets, params, status, progress)
+messages         -- 消息记录表 (中英双语, 回复状态)
+group_members    -- 群组成员表 (去重 UNIQUE)
+settings         -- 键值对配置 (可 Bot 动态修改)
+```
+
 
 ---
 
