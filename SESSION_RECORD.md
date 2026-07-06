@@ -9,8 +9,6 @@
 - OS: Ubuntu 22.04.5 LTS
 - CPU: 1核 | RAM: 957MiB | 磁盘: 20GB
 - Swap: 5GiB (1G原始 + 4G新增)
-- Telegram Desktop: 3.6.1
-- Xvfb: 已安装 (Desktop无法创建窗口，已弃用)
 
 ### GitHub 仓库
 1. **telegram666**: https://github.com/ffei2963-ai/telegram666
@@ -44,12 +42,7 @@
 6. 批量退出: 宝宝巴士 + 测试 (6个群全部退出)
 7. 一键退出全部群: leave_all_groups() (3账号 × 2群 = 6次)
 
-### 技术发现
-- ❌ Telegram Desktop无法在VPS创建X11窗口 (缺字体/桌面环境)
-- ❌ xdotool自动化无效 (Desktop不创建窗口)
-- ✅ Telethon MTProto API直接操作 (更快更可靠)
-- ✅ 随机拟人延时避免flood wait (human_delay 0.8~3.5s)
-- ✅ 4GB swap 防止OOM (1GB → 5GB total)
+### 用户导入的账号 (ZIP: +1 美国加拿大混合)
 
 ### 项目结构 (telegram666)
 ```
@@ -61,8 +54,10 @@
 ├── core/
 │   ├── telethon_engine.py     # Telethon多账号引擎
 │   ├── account_manager.py     # 账号管理层
+│   ├── batch_ops.py           # 批量操作引擎
 │   ├── tdata_handler.py       # tdata文件处理
 │   ├── ai_service.py          # DeepSeek AI
+│   ├── group_scraper.py       # 群组搜索与成员提取
 │   ├── translator.py          # 翻译服务
 │   └── message_monitor.py     # 消息监听
 ├── db/

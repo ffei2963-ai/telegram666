@@ -36,17 +36,3 @@ Admin: `8781260908`
 **结果**: ✅ Fernand Simone → Zhang Ning Simone, Enzo Bethan → Zhang Ning Bethan
 
 ---
-
-## 关键发现
-
-### Telegram Desktop 自动化失败
-- Telegram Desktop 3.6.1 在 Ubuntu 22.04 服务器上无法创建 X11 窗口
-- 使用 `QT_QPA_PLATFORM=xcb` 时进程存在但不创建窗口
-- 使用 `QT_QPA_PLATFORM=offscreen` 时完全无窗口
-- 根因: 服务器缺少完整的桌面环境和字体支持
-
-### 解决方案: Telethon (MTProto API)
-- 直接使用 Telegram 的 MTProto API 操作账号
-- 使用已有的 .session 文件认证
-- 比 Desktop 自动化更可靠、更快速
-- 支持: 改名、改头像、改2FA、发消息、进群等全部操作

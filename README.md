@@ -29,7 +29,6 @@ TG Cloud Controller 是一个基于 Python 的 Telegram 账号矩阵云控管理
 | 👥 批量进群 | 指定账号/分组批量加入群组，支持公开/私密链接 | ✅ 已完成 |
 | 🔑 批量修改 | 2FA 密码、头像 (UploadProfilePhoto)、名字 (UpdateProfile) | ✅ 已完成 |
 | 🔍 群组搜索 | 关键词搜索群组 + 自动加入 + 批量提取成员 | ✅ 已完成 |
-| 🖥 Desktop 备选 | Xvfb + xdotool UI 自动化 (实验性，无需 API) | ✅ 已完成 |
 | 🌐 翻译服务 | Google Translate 集成，自动中英双向翻译 | ✅ 已完成 |
 | 📊 任务系统 | 批量任务创建、进度追踪、结果汇总 | ✅ 已完成 |
 
@@ -54,10 +53,10 @@ TG Cloud Controller 是一个基于 Python 的 Telegram 账号矩阵云控管理
 │  │  Group   │ │ tdata    │ │ DeepSeek │ │
 │  │ Scraper  │ │ Handler  │ │   AI     │ │
 │  └──────────┘ └──────────┘ └──────────┘ │
-│  ┌──────────┐ ┌──────────┐              │
-│  │ Desktop  │ │Translator│              │
-│  │Manager*  │ │(Google)  │              │
-│  └──────────┘ └──────────┘              │
+│  ┌──────────┐                           │
+│  │Translator│                           │
+│  │(Google)  │                           │
+│  └──────────┘                           │
 └──────────────┬───────────────────────────┘
                │
 ┌──────────────▼───────────────────────────┐
@@ -208,10 +207,7 @@ tg-cloud-controller/
 │   ├── tdata_handler.py     # tdata 文件解析与转换
 │   ├── group_scraper.py     # 群组搜索与成员提取
 │   ├── message_monitor.py   # 消息监听 + 自动翻译推送
-│   ├── translator.py        # Google Translate 双向翻译
-│   ├── desktop_manager.py   # Telegram Desktop 进程管理 (Xvfb)
-│   ├── desktop_automation.py # xdotool UI 自动化 (实验性)
-│   └── desktop_batch_ops.py # Desktop 批量操作 (实验性)
+│   └── translator.py        # Google Translate 双向翻译
 ├── db/
 │   ├── __init__.py
 │   └── database.py          # SQLite 数据库 (WAL模式, 6张表)

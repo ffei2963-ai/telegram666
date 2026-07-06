@@ -1,7 +1,6 @@
 """TG Cloud Controller - Bot 处理器 (Telethon引擎 完整版)
 
 所有操作基于 Telethon MTProto API，直接操作 Telegram 服务器。
-Desktop 作为备选（实验性，需要 Xvfb+X11 环境）。
 """
 
 import os, json, time, shutil, asyncio
